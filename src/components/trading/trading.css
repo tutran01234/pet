@@ -1,0 +1,26 @@
+.item-trade{
+    background-color: #fff;
+    height: 90px;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 20px;
+    display: flex;
+    position: relative;
+}
+.item-trade .avatar-trade{
+  height: 70px;
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  border-radius: 2%;
+}
+.item-trade .conetnt-trade{
+    margin: 8px 10px;
+}
+.item-trade .conetnt-trade .type-trade{
+    color: red;
+    font-weight: 500;
+    font-size: 13px;
+}
