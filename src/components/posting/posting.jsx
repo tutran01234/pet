@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Input } from "reactstrap";
 import { ReactComponent as Dogs } from "../../assets/dogs.svg";
@@ -11,11 +11,13 @@ import ToastCustom from "../toast/toastCustom";
 import { toast } from "react-toastify";
 
 export function Posting(props) {
+  const [arrPost, setArrPost] = useState("");
   const [image, setImage] = useState(null);
   const [titleAticle, setTitleAticle] = useState("");
 
   const { handleOpenModal } = props;
-  const { dataUser, postArticle, isToken } = useContext(UserContext);
+  const { dataUser, postArticle, isToken, getListPost } =
+    useContext(UserContext);
 
   const handleImageUpload = async (e) => {
     const file2 = e.target.files[0] || null;
@@ -34,6 +36,15 @@ export function Posting(props) {
       };
     }
   };
+
+  useEffect(() => {
+    async function getDataNewFeeds() {
+      let res = await getListPost();
+
+      setArrPost(res);
+    }
+    getDataNewFeeds();
+  }, []);
   const handlePostArticle = async () => {
     if (!image) {
       alert("Bạn chưa thêm ảnh bài viết!");
@@ -87,14 +98,21 @@ export function Posting(props) {
             ></textarea>
           </div>
           <div className="file-post">
-            <div className="import-photo">
+            <div
+              className="import-photo"
+              style={image ? { color: "blue" } : {}}
+            >
               <div style={{ opacity: 0, width: 0 }}>
                 <Input type="file" onChange={handleImageUpload} />
                 {image && <img src={image} alt="Uploaded" />}
               </div>
               <i
                 className="fa fa-image"
-                style={{ color: "gray", cursor: "pointer" }}
+                style={
+                  image
+                    ? { color: "blue", cursor: "pointer" }
+                    : { color: "gray", cursor: "pointer" }
+                }
               ></i>
               <p>Photo</p>
             </div>
@@ -109,24 +127,17 @@ export function Posting(props) {
           </div>
         </div>
       </div>
-      <Article
-        handleOpenModal={handleOpenModal}
-        imagePost={
-          "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg"
-        }
-      />
-      <Article
-        handleOpenModal={handleOpenModal}
-        imagePost={
-          "https://img.freepik.com/free-vector/flat-international-cat-day-background_52683-87035.jpg?size=626&ext=jpg"
-        }
-      />
-      <Article
-        handleOpenModal={handleOpenModal}
-        imagePost={
-          "https://cdn.pixabay.com/photo/2016/02/10/16/37/cat-1192026_640.jpg"
-        }
-      />
+      {arrPost &&
+        arrPost.map((e, index) => (
+          <Article
+            key={index}
+            handleOpenModal={handleOpenModal}
+            valueArticle={e}
+            imagePost={
+              "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg"
+            }
+          />
+        ))}
     </div>
   );
 }

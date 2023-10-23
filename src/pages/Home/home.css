@@ -61,7 +61,16 @@
 }
 .avatar {
   height: 50px;
-  width: 50px;
+  width: 53px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  border-radius: 50%;
+}
+.avatar-profile {
+  height: 110px;
+  width: 110px;
   display: flex;
   justify-content: center;
   align-items: center;

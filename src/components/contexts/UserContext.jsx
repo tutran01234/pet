@@ -5,6 +5,8 @@ import {
   TOKEN_POST,
   TOKEN_VALIDATE_POST,
   USER_GET,
+  LIST_POST_NEW_FEEDS,
+  GET_LIST_POST_BY_USER,
 } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import ToastCustom from "../toast/toastCustom";
@@ -40,7 +42,6 @@ export function UserStorage({ children }) {
       const json = await response.json();
 
       setDataUser(json);
-      console.log("123");
       setIsLogged(true);
     } catch (error) {
       setError(error.message);
@@ -76,10 +77,43 @@ export function UserStorage({ children }) {
       setLoading(true);
       const { url, options } = CREATE_POST(dataArticle, tokenUser);
       const response = await fetch(url, options);
-      if (!response.ok) throw new Error(`Sai rồi`);
+      if (!response.ok) throw new Error(`Tạo bài viết lỗi`);
       const { data } = await response.json();
-      console.log("res123:", data, response);
       return response;
+    } catch (error) {
+      setError(error.message);
+      setIsLogged(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function getListPost() {
+    try {
+      setError(null);
+      setLoading(true);
+      const { url, options } = LIST_POST_NEW_FEEDS();
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Lỗi`);
+      const { data } = await response.json();
+      return data;
+    } catch (error) {
+      setError(error.message);
+      setIsLogged(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function getListPostByUser(userId) {
+    try {
+      setError(null);
+      setLoading(true);
+      const { url, options } = GET_LIST_POST_BY_USER(userId);
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Lỗi`);
+      const { data } = await response.json();
+      return data;
     } catch (error) {
       setError(error.message);
       setIsLogged(false);
@@ -125,6 +159,8 @@ export function UserStorage({ children }) {
         loading,
         isToken,
         postArticle,
+        getListPost,
+        getListPostByUser,
       }}
     >
       {children}

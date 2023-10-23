@@ -7,7 +7,7 @@ import { Head } from "../../components/Head";
 import { NavbarLeft } from "../../components/navbarLeft";
 import "./home.css";
 import { Article } from "./article";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Box, Modal, Typography } from "@material-ui/core";
 import { Button } from "../../components/Forms/Button";
 import { Posting } from "../../components/posting/posting";
@@ -33,6 +33,7 @@ export function Home() {
   const handleOpenModal = () => {
     setOpenModal(true);
   };
+
 
   return (
     <section className=" mt-5" style={{ position: "relative" }}>

@@ -2,11 +2,12 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as Dogs } from "../../assets/dogs.svg";
 import { UserContext } from "../contexts/UserContext";
-
+import { useNavigate } from "react-router-dom";
 import { User } from "@phosphor-icons/react";
 
 export function Header() {
   const { userLogout } = useContext(UserContext);
+  const navigate = useNavigate();
   const [isDropdown, setDropDown] = useState(false);
   return (
     <header className="fixed w-full top-0 z-100 shadow-sm ease-in-out duration-300 bg-white dark:bg-darkMedium">
@@ -104,6 +105,7 @@ export function Header() {
           <p
             onClick={() => {
               setDropDown(false);
+              navigate("/profile");
             }}
             style={{
               margin: "7px 0 0 10px",

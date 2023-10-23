@@ -160,3 +160,29 @@ export function CREATE_POST(formData, token) {
     },
   };
 }
+
+export function LIST_POST_NEW_FEEDS() {
+  return {
+    url: `${API_URL}post/news-feed`,
+    options: {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+    },
+  };
+}
+
+export function GET_LIST_POST_BY_USER(userId) {
+  return {
+    url: `${API_URL}/user/${userId}`,
+    options: {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+    },
+  };
+}
