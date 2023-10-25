@@ -43,7 +43,7 @@ export function Posting(props) {
     setIsLoading(true);
     async function getDataNewFeeds() {
       let res = await getListPost();
-
+      console.log("data arr:", res);
       setArrPost(res);
       setIsLoading(false);
     }
@@ -139,7 +139,9 @@ export function Posting(props) {
             handleOpenModal={handleOpenModal}
             valueArticle={e}
             imagePost={
-              "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg"
+              e && e.attachment.length > 0
+                ? e.attachment[0].attachment
+                : "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg"
             }
           />
         ))}
