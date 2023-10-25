@@ -14,7 +14,7 @@ import { Posting } from "../../components/posting/posting";
 import { Trading } from "../../components/trading/trading";
 import { ModalTrading } from "../../components/trading/modalTrading";
 import { UserContext } from "../../components/contexts/UserContext";
-
+import jwtDecode from "jwt-decode";
 export function Home() {
   const { isLogged } = useContext(UserContext);
   const [openModal, setOpenModal] = useState(false);
@@ -33,7 +33,10 @@ export function Home() {
   const handleOpenModal = () => {
     setOpenModal(true);
   };
-
+  // useEffect(() => {
+  //   let a = jwtDecode(window.localStorage.getItem("token"));
+  //   console.log("a:", a);
+  // });
 
   return (
     <section className=" mt-5" style={{ position: "relative" }}>

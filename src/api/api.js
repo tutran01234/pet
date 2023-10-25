@@ -25,13 +25,15 @@ export function TOKEN_VALIDATE_POST(token) {
   };
 }
 
-export function USER_GET(token) {
+export function USER_GET(idUser, data) {
+  console.log("userIdL", idUser);
+
   return {
-    url: API_URL + 'api/user',
+    url: `${API_URL}user/${idUser}`,
     options: {
-      method: 'GET',
+      method: "GET",
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: "Bearer " + data,
       },
     },
   };
@@ -39,50 +41,50 @@ export function USER_GET(token) {
 
 export function USER_POST(body) {
   return {
-    url: API_URL + 'api/user',
+    url: API_URL + "api/user",
     options: {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     },
   };
 }
 
-export function REGISTER_USER(body){
+export function REGISTER_USER(body) {
   return {
-    url: API_URL + 'user/register',
+    url: API_URL + "user/register",
     options: {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
-    }
-  }
+      body: JSON.stringify(body),
+    },
+  };
 }
 
-export function LOGIN_USER(body){
+export function LOGIN_USER(body) {
   return {
-    url: API_URL + 'user/login',
+    url: API_URL + "user/login",
     options: {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
-    }
-  }
+      body: JSON.stringify(body),
+    },
+  };
 }
 
 export function PHOTO_POST(formData, token) {
   return {
-    url: API_URL + 'api/photo',
+    url: API_URL + "api/photo",
     options: {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: "Bearer " + token,
       },
       body: formData,
     },
@@ -93,8 +95,8 @@ export function PHOTOS_GET({ page, total, user }) {
   return {
     url: `${API_URL}api/photo/?_page=${page}&_total=${total}&_user=${user}`,
     options: {
-      method: 'GET',
-      cache: 'no-store',
+      method: "GET",
+      cache: "no-store",
     },
   };
 }
@@ -103,8 +105,8 @@ export function PHOTO_GET(id) {
   return {
     url: `${API_URL}api/photo/${id}`,
     options: {
-      method: 'GET',
-      cache: 'no-store',
+      method: "GET",
+      cache: "no-store",
     },
   };
 }
@@ -113,9 +115,9 @@ export function PHOTO_DELETE(id) {
   return {
     url: `${API_URL}api/photo/${id}`,
     options: {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        Authorization: 'Bearer ' + window.localStorage.getItem(token),
+        Authorization: "Bearer " + window.localStorage.getItem(token),
       },
     },
   };
@@ -125,9 +127,9 @@ export function PASSWORD_LOST(body) {
   return {
     url: `${API_URL}api/password/lost`,
     options: {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     },
@@ -138,9 +140,9 @@ export function PASSWORD_RESET(body) {
   return {
     url: `${API_URL}api/password/reset`,
     options: {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     },
@@ -160,10 +162,49 @@ export function CREATE_POST(formData, token) {
     },
   };
 }
+export function ACCEPT_POST(formData) {
+  return {
+    url: API_URL + "manage/post/approve-post",
+    options: {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    },
+  };
+}
+
+export function REFUSE_POST(formData) {
+  return {
+    url: API_URL + "manage/post/refuse-post",
+    options: {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    },
+  };
+}
 
 export function LIST_POST_NEW_FEEDS() {
   return {
     url: `${API_URL}post/news-feed`,
+    options: {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+    },
+  };
+}
+export function GET_POST_PENDDING() {
+  return {
+    url: `${API_URL}manage/post/pending-post`,
     options: {
       method: "GET",
       headers: {

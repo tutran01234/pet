@@ -7,10 +7,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export function Article(props) {
+export function ArticlePending(props) {
   const navigate = useNavigate();
-  const { handleOpenModal, imagePost, valueArticle } = props;
+  const {
+    handleOpenModal,
+    imagePost,
+    valueArticle,
+    handleAccept,
+    id,
+    handleRefuse,
+  } = props;
   // console.log("acb:", valueArticle);
+
   const [isLike, setIsLike] = useState(false);
   return (
     <div
@@ -72,62 +80,42 @@ export function Article(props) {
             height: "25px",
           }}
         >
-          {isLike ? (
-            <>
-              <i
+          <>
+            {/* <i
                 className="fa-solid fa-thumbs-up"
                 style={{ color: "#006fff" }}
                 onClick={() => {
                   setIsLike(false);
                 }}
-              ></i>
-              <span
-                style={{ color: "#006fff", cursor: "pointer" }}
-                onClick={() => {
-                  setIsLike(false);
-                }}
-              >
-                {" "}
-                Like
-              </span>
-            </>
-          ) : (
-            <>
-              <i
-                onClick={() => {
-                  setIsLike(true);
-                }}
-                className="fa-regular fa-thumbs-up"
-                style={{
-                  cursor: "pointer",
-                }}
-              ></i>
-              <span
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  setIsLike(true);
-                }}
-              >
-                {" "}
-                Like
-              </span>
-            </>
-          )}
+              ></i> */}
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                handleAccept(id);
+              }}
+            >
+              {" "}
+              Xác nhận
+            </span>
+          </>
         </div>
         <div
+          onClick={() => {
+            handleRefuse(id);
+          }}
           className="comment"
           style={{
             textAlign: "center",
             width: "50%",
           }}
         >
-          <i
+          {/* <i
             className="fa-regular fa-comment"
             style={{
               cursor: "pointer",
             }}
-          ></i>{" "}
-          Commnent
+          ></i>{" "} */}
+          Từ chối
         </div>
       </div>
     </div>

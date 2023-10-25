@@ -9,6 +9,7 @@ import { NavbarLeft } from "../navbarLeft";
 import { Article } from "../../pages/Home/article";
 import ToastCustom from "../toast/toastCustom";
 import { toast } from "react-toastify";
+import { Loading } from "../Loading";
 
 export function Posting(props) {
   const [arrPost, setArrPost] = useState("");
@@ -18,6 +19,7 @@ export function Posting(props) {
   const { handleOpenModal } = props;
   const { dataUser, postArticle, isToken, getListPost } =
     useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleImageUpload = async (e) => {
     const file2 = e.target.files[0] || null;
@@ -38,10 +40,12 @@ export function Posting(props) {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     async function getDataNewFeeds() {
       let res = await getListPost();
 
       setArrPost(res);
+      setIsLoading(false);
     }
     getDataNewFeeds();
   }, []);
@@ -127,6 +131,7 @@ export function Posting(props) {
           </div>
         </div>
       </div>
+      {isLoading && <Loading />}
       {arrPost &&
         arrPost.map((e, index) => (
           <Article

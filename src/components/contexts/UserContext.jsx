@@ -7,9 +7,14 @@ import {
   USER_GET,
   LIST_POST_NEW_FEEDS,
   GET_LIST_POST_BY_USER,
+  GET_POST_PENDDING,
+  ACCEPT_POST,
+  REFUSE_POST,
 } from "../../api/api";
 import { useNavigate } from "react-router-dom";
-import ToastCustom from "../toast/toastCustom";
+import jwtDecode from "jwt-decode";
+
+// import ToastCustom from "../toast/toastCustom";
 
 export const UserContext = createContext();
 
@@ -32,14 +37,20 @@ export function UserStorage({ children }) {
     [navigate]
   );
 
-  async function getUser(token) {
+  async function getUser(idUser, data) {
     try {
       setError(null);
       setLoading(true);
 
-      const { url, options } = USER_GET(token);
+      const { url, options } = USER_GET(idUser, data);
       const response = await fetch(url, options);
       const json = await response.json();
+      if (json.data.roleId === "e112130c-4665-45f6-93e4-19f98bc51f24") {
+        navigate("/staff");
+      } else {
+        navigate("/home");
+      }
+      console.log("res pon detail user:", json.data);
 
       setDataUser(json);
       setIsLogged(true);
@@ -59,6 +70,11 @@ export function UserStorage({ children }) {
       if (!response.ok) throw new Error(`Sai rồi`);
       const { data } = await response.json();
       window.localStorage.setItem("token", data);
+      const decoded = await jwtDecode(data);
+      await getUser(decoded.userid, data);
+      return;
+
+      // console.log("decode:", decoded);
 
       navigate("/home");
 
@@ -88,11 +104,62 @@ export function UserStorage({ children }) {
     }
   }
 
+  async function acceptPost(dataform) {
+    try {
+      setError(null);
+      setLoading(true);
+      const { url, options } = ACCEPT_POST(dataform);
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Tạo bài viết lỗi`);
+      const { data } = await response.json();
+      return response;
+    } catch (error) {
+      setError(error.message);
+      setIsLogged(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function refusePost(dataform) {
+    try {
+      setError(null);
+      setLoading(true);
+      const { url, options } = REFUSE_POST(dataform);
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Tạo bài viết lỗi`);
+      const { data } = await response.json();
+      return response;
+    } catch (error) {
+      setError(error.message);
+      setIsLogged(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function getListPost() {
     try {
       setError(null);
       setLoading(true);
       const { url, options } = LIST_POST_NEW_FEEDS();
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Lỗi`);
+      const { data } = await response.json();
+      return data;
+    } catch (error) {
+      setError(error.message);
+      setIsLogged(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function getPostPendding() {
+    try {
+      setError(null);
+      setLoading(true);
+      const { url, options } = GET_POST_PENDDING();
       const response = await fetch(url, options);
       if (!response.ok) throw new Error(`Lỗi`);
       const { data } = await response.json();
@@ -161,6 +228,9 @@ export function UserStorage({ children }) {
         postArticle,
         getListPost,
         getListPostByUser,
+        getPostPendding,
+        acceptPost,
+        refusePost,
       }}
     >
       {children}
