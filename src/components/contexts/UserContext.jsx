@@ -10,6 +10,8 @@ import {
   GET_POST_PENDDING,
   ACCEPT_POST,
   REFUSE_POST,
+  CREATE_POST_TRADE,
+  POST_FOLLOW,
 } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 import jwtDecode from "jwt-decode";
@@ -25,6 +27,7 @@ export function UserStorage({ children }) {
   const [error, setError] = useState(null);
   const [isToken, setToken] = useState("");
   const navigate = useNavigate();
+  let token = window.localStorage.getItem("token");
   const userLogout = useCallback(
     async function () {
       setDataUser(null);
@@ -36,6 +39,14 @@ export function UserStorage({ children }) {
     },
     [navigate]
   );
+
+  useEffect(() => {
+    async function getInforUser() {
+      const id = await jwtDecode(token).userid;
+      const infoUser = await getUser(id, token);
+    }
+    getInforUser();
+  }, [token]);
 
   async function getUser(idUser, data) {
     try {
@@ -54,6 +65,7 @@ export function UserStorage({ children }) {
 
       setDataUser(json);
       setIsLogged(true);
+      return json.data;
     } catch (error) {
       setError(error.message);
       setIsLogged(false);
@@ -72,11 +84,8 @@ export function UserStorage({ children }) {
       window.localStorage.setItem("token", data);
       const decoded = await jwtDecode(data);
       await getUser(decoded.userid, data);
-      return;
 
       // console.log("decode:", decoded);
-
-      navigate("/home");
 
       await getUser(data);
     } catch (error) {
@@ -121,6 +130,24 @@ export function UserStorage({ children }) {
     }
   }
 
+  async function createPostTrade(dataform) {
+    console.log("data form", dataform);
+    try {
+      setError(null);
+      setLoading(true);
+      const { url, options } = CREATE_POST_TRADE(dataform);
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Tạo bài viết lỗi`);
+      const { data } = await response.json();
+      return response;
+    } catch (error) {
+      setError(error.message);
+      setIsLogged(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function refusePost(dataform) {
     try {
       setError(null);
@@ -132,7 +159,22 @@ export function UserStorage({ children }) {
       return response;
     } catch (error) {
       setError(error.message);
-      setIsLogged(false);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function postFollow(dataform) {
+    try {
+      setError(null);
+      setLoading(true);
+      const { url, options } = POST_FOLLOW(dataform);
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Tạo bài viết lỗi`);
+      const { data } = await response.json();
+      return response;
+    } catch (error) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -231,6 +273,8 @@ export function UserStorage({ children }) {
         getPostPendding,
         acceptPost,
         refusePost,
+        createPostTrade,
+        postFollow,
       }}
     >
       {children}

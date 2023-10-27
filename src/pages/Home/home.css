@@ -95,6 +95,15 @@
   font-weight: 300;
   cursor: pointer !important;
 }
+.file-post-trade .import-photo {
+  display: flex;
+  width: 55px;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 5px;
+  font-weight: 300;
+  cursor: pointer !important;
+}
 /* .file-post .import-photo:hover {
   cursor: pointer;
   color: #f48023;
@@ -103,6 +112,11 @@
   font-size: 13px;
   display: flex;
   justify-content: space-between;
+}
+.file-post-trade {
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
 }
 .button-post {
   align-items: center;

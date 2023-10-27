@@ -46,7 +46,6 @@ export function Staff() {
     setIsLoading(true);
     async function getDataNewFeeds() {
       let res = await getPostPendding();
-      console.log("res pendding:", res[0].attachment[0].attachment);
 
       setArrPost(res);
       setIsLoading(false);

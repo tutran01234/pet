@@ -9,8 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 export function Article(props) {
   const navigate = useNavigate();
-  const { handleOpenModal, imagePost, valueArticle } = props;
-  // console.log("acb:", valueArticle);
+  const { handleOpenModal, imagePost, valueArticle, name } = props;
   const [isLike, setIsLike] = useState(false);
   return (
     <div
@@ -52,7 +51,15 @@ export function Article(props) {
       <div className="text-article">
         <p>{valueArticle && valueArticle.content}</p>
       </div>
-      <img src={imagePost} style={{ borderRadius: "5px", marginTop: "10px" }} />
+      {valueArticle &&
+        valueArticle.attachment.length > 0 &&
+        valueArticle.attachment[0].attachment !== "aaaaaaaaaa" && (
+          <img
+            src={valueArticle && valueArticle.attachment[0].attachment}
+            style={{ borderRadius: "5px", marginTop: "10px" }}
+          />
+        )}
+
       <div
         className="like-comment"
         style={{

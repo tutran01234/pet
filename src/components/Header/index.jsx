@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { User } from "@phosphor-icons/react";
 
 export function Header() {
-  const { userLogout } = useContext(UserContext);
+  const { userLogout, dataUser } = useContext(UserContext);
+  console.log("user header:", dataUser);
   const navigate = useNavigate();
   const [isDropdown, setDropDown] = useState(false);
   return (
@@ -87,7 +88,7 @@ export function Header() {
       {isDropdown && (
         <div
           style={{
-            width: "120px",
+            width: "140px",
             height: "100px",
             position: "absolute",
             right: "10px",
@@ -100,7 +101,7 @@ export function Header() {
           <p
             style={{ marginLeft: "10px", fontSize: "10px", fontWeight: "400" }}
           >
-            Xin chào Kay
+            Xin chào {dataUser && dataUser.data.username}
           </p>
           <p
             onClick={() => {

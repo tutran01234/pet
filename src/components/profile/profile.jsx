@@ -6,19 +6,23 @@ import { BrowserRouter as Router, Route, useParams } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 
 export function Profile(props) {
-  const { getListPostByUser } = useContext(UserContext);
-  const [dataUser, setDataUser] = useState("");
+  const { getListPostByUser, dataUser, postFollow } = useContext(UserContext);
+  const [userData, setDataUser] = useState("");
   const urlParams = new URLSearchParams(window.location.search);
   const userId = urlParams.get("userId");
+  const [isFollow, setIsFollow] = useState(false);
   useEffect(() => {
-    console.log("userId", userId);
-    async function getData() {
-      let res = await getListPostByUser(userId);
-      setDataUser(res);
+    if (userId) {
+      async function getData() {
+        let res = await getListPostByUser(userId);
+        setDataUser(res);
+      }
+      getData();
+    } else {
+      setDataUser(dataUser && dataUser.data);
     }
-    getData();
   }, [userId]);
-  console.log(dataUser);
+  console.log("use data", userData);
   const {} = props;
   return (
     <div
@@ -63,12 +67,12 @@ export function Profile(props) {
           ></div>
           <div style={{ width: "86%", height: "90px", margin: "0 auto" }}>
             <p style={{ fontSize: "16px", fontWeight: "500" }}>
-              {dataUser && dataUser.name}
+              {userData && userData.name}
             </p>
             <p
               style={{ fontSize: "11px", fontWeight: "300", marginTop: "-7px" }}
             >
-              {dataUser && `@${dataUser.username}`}
+              {userData && `@${userData.username}`}
             </p>
             <div
               style={{
@@ -80,8 +84,47 @@ export function Profile(props) {
                 fontWeight: "500",
               }}
             >
-              <p>1000 folow</p>
-              <p style={{ cursor: "pointer" }}>edit profile</p>
+              <p>
+                {" "}
+                {userData && userData?.follower} Follow{" "}
+                <span style={{ marginLeft: "10px" }}>
+                  {" "}
+                  {userData && userData.following} Following
+                </span>
+              </p>{" "}
+              <p style={{ cursor: "pointer" }}>
+                {" "}
+                {userId ? (
+                  <p
+                    onClick={async () => {
+                      let res = await postFollow({
+                        token: window.localStorage.getItem("token"),
+                        userId: userData.id,
+                      });
+                      console.log("res:", res);
+                    }}
+                    style={
+                      userData && userData.isFollowed
+                        ? {
+                            color: "green",
+                            backgroundColor: "orange",
+                            padding: "4px 10px",
+                            borderRadius: "5px",
+                          }
+                        : {
+                            color: "black",
+                            backgroundColor: "gray",
+                            padding: "4px 10px",
+                            borderRadius: "5px",
+                          }
+                    }
+                  >
+                    {userData && userData.isFollowed ? "Followed" : "Folow"}
+                  </p>
+                ) : (
+                  <p> edit profile</p>
+                )}
+              </p>
             </div>
           </div>
           <hr
@@ -103,24 +146,17 @@ export function Profile(props) {
             paddingTop: "20px",
           }}
         >
-          <Article
-            handleOpenModal={() => {}}
-            imagePost={
-              "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg"
-            }
-          />
-          <Article
-            handleOpenModal={() => {}}
-            imagePost={
-              "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg"
-            }
-          />
-          <Article
-            handleOpenModal={() => {}}
-            imagePost={
-              "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_1280.jpg"
-            }
-          />
+          {userData &&
+            userData.posts.length > 0 &&
+            userData.posts.map((e, index) => {
+              return (
+                <Article
+                  key={index}
+                  valueArticle={e}
+                  handleOpenModal={() => {}}
+                />
+              );
+            })}
         </div>
         <div style={{ height: "20px" }}></div>
       </div>

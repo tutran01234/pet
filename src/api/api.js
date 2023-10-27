@@ -176,6 +176,35 @@ export function ACCEPT_POST(formData) {
   };
 }
 
+
+export function CREATE_POST_TRADE(formData) {
+  return {
+    url: API_URL + "postTrade/create-post-trade",
+    options: {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    },
+  };
+}
+
+export function POST_FOLLOW(formData) {
+  return {
+    url: API_URL + "UserFollowing/follow-user",
+    options: {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + window.localStorage.getItem("token"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    },
+  };
+}
+
 export function REFUSE_POST(formData) {
   return {
     url: API_URL + "manage/post/refuse-post",
