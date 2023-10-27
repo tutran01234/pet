@@ -9,10 +9,16 @@ import { NavbarLeft } from "../navbarLeft";
 import { Article } from "../../pages/Home/article";
 
 export function ItemTrading(props) {
-  const { imageTrading } = props;
+  const { imageTrading, setTabDetail } = props;
   const [isFavorite, setFavorite] = useState(false);
   return (
-    <div className="item-trade">
+    <div
+      className="item-trade"
+      onClick={() => {
+        console.log("1");
+        setTabDetail();
+      }}
+    >
       <div
         className="avatar-trade"
         style={{

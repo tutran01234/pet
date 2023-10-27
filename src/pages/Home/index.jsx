@@ -15,6 +15,7 @@ import { Trading } from "../../components/trading/trading";
 import { ModalTrading } from "../../components/trading/modalTrading";
 import { UserContext } from "../../components/contexts/UserContext";
 import jwtDecode from "jwt-decode";
+import { DetailTrade } from "../../components/trading/traddingDetail";
 export function Home() {
   const { isLogged } = useContext(UserContext);
   const [openModal, setOpenModal] = useState(false);
@@ -37,6 +38,7 @@ export function Home() {
   //   let a = jwtDecode(window.localStorage.getItem("token"));
   //   console.log("a:", a);
   // });
+  console.log("istab", isTab);
 
   return (
     <section className=" mt-5" style={{ position: "relative" }}>
@@ -47,11 +49,15 @@ export function Home() {
             setTab(e);
           }}
         />
-        {isTab === "posting" ? (
-          <Posting handleOpenModal={handleOpenModal} />
-        ) : (
-          <Trading />
+        {isTab === "posting" && <Posting handleOpenModal={handleOpenModal} />}{" "}
+        {isTab === "trading" && (
+          <Trading
+            setTabDetail={() => {
+              setTab("detailTrade");
+            }}
+          />
         )}
+        {isTab === "detailTrade" && <DetailTrade />}
         {isTab === "trading" && (
           <button
             className="button-post-trading"
@@ -66,7 +72,6 @@ export function Home() {
             Post
           </button>
         )}
-
         <div
           className="tag"
           style={isTab === "posting" ? { top: "90px" } : { top: "123px" }}

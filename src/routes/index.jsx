@@ -11,6 +11,7 @@ import { ProtectedRoute } from '../utils/ProtectedRoute';
 import { NotFound } from '../components/NotFound';
 import { Profile } from "../components/profile/profile";
 import { Staff } from "../components/staff/staff";
+import { DetailTrade } from "../components/trading/traddingDetail";
 
 export function RoutesApp() {
   return (

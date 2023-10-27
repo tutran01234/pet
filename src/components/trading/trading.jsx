@@ -9,7 +9,8 @@ import { NavbarLeft } from "../navbarLeft";
 import { Article } from "../../pages/Home/article";
 import { ItemTrading } from "./tradingItem";
 
-export function Trading() {
+export function Trading(props) {
+  const { setTabDetail } = props;
   return (
     <div style={{ width: "65%", height: "100vh" }}>
       <h1
@@ -23,6 +24,7 @@ export function Trading() {
         Trading post
       </h1>
       <ItemTrading
+        setTabDetail={setTabDetail}
         imageTrading={
           "https://img.freepik.com/premium-photo/young-pembroke-welsh-corgi-isolated_87557-18774.jpg?w=740"
         }
